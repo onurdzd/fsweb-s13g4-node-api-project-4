@@ -13,8 +13,9 @@ function checkSameUserName(req, res, next) {
     const isSame = !!kullaniciAdi && User.checkIsSameUserName(kullaniciAdi); //kullancıadı girdiyse(undefined değilse) ve aynısıysa
     if (isSame) {
       res.status(400).json({ message: "aynı kullanıcı adı bulunuyor" });
+    } else {
+      next();
     }
-    next();
   } catch (error) {
     next(error);
   }
@@ -26,12 +27,26 @@ function validateNewUser(res, req, next) {
       res.status(400).json({ message: "eksik alan var" });
     } else {
       req.user = { kullaniciAdi: kullaniciAdi, sifre: sifre };
+      next();
     }
-    next();
   } catch (error) {
     next(error);
   }
   const { kullaniciAdi, sifre } = req.body;
 }
 
-module.exports = { logger, checkSameUserName, validateNewUser };
+function isValidUser(req, res, next) {
+  try {
+    let user = { kullaniciAdi: req.body.kullaniciAdi, sifre: req.body.sifre };
+    const isExist = User.findUser(user);
+    if (!isExist) {
+      res.status(404).json({ message: "böyle bir kullanıcı yok" });
+    } else {
+      next();
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { logger, checkSameUserName, validateNewUser, isValidUser };

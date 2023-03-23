@@ -1,12 +1,8 @@
 const express=require("express")
 const router=express.Router()
+const User=require("./users-model.js")
 
 router.get("/", (req, res) => {
-    try {
-        res.json({id:1,user:"onur"});
-    } catch (error) {
-        res.status(400).json({message:"Hata alındı"})
-    }
-  });
+   res.status(201).json(User.getAllUsers())});
 
 module.exports=router

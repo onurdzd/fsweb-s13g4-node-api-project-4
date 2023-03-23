@@ -39,6 +39,7 @@ function getAllUsers() {
 function createNewUser(user) {
   user.id = getId();
   users.push(user);
+  return user
 }
 
 function findUser(user) {
