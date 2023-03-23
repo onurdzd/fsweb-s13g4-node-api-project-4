@@ -1,4 +1,4 @@
-const logger =(req,req,next)=>{
+const logger =(req,res,next)=>{
     console.log(`[${new Date().toISOString()}] method:${req.method} url:${req.url}`)
     next()
 }
